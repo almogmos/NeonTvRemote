@@ -10,9 +10,19 @@ import androidx.appcompat.app.AppCompatActivity
 class MainActivity : AppCompatActivity() {
 
     private lateinit var status: TextView
+    private val candidates = listOf(
+        0x20DF10EFL,
+        0xE0E040BFL,
+        0xA90L
+    )
+    private var currentCandidate = 0
 
+
+    
     override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
+   
+
+super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
         status = findViewById(R.id.txtStatus)
@@ -35,28 +45,23 @@ class MainActivity : AppCompatActivity() {
 
         val freq = 38000
 
-        val candidates = listOf(
-            0x20DF10EFL, // common LG power
-            0xE0E040BFL, // common Samsung power
-            0xA90L       // common Sony power (short form)
-        )
+    
 
-        for ((index, code) in candidates.withIndex()) {
-            try {
-                val pattern = if (code <= 0xFFFF) {
-                    buildSony12Pattern(code.toInt())
-                } else {
-                    buildNec32Pattern(code)
-                }
-                ir.transmit(freq, pattern)
-                status.text = "IR sent candidate ${index + 1}. If TV reacted, tell me which number worked."
-                return
-            } catch (e: Exception) {
-                // try next
+  
+        val code = candidates[currentCandidate]
+        currentCandidate = (currentCandidate + 1) % candidates.size
+        try {
+            val pattern = if (code <= 0xFFFF) {
+                buildSony12Pattern(code.toInt())
+            } else {
+                buildNec32Pattern(code)
             }
+            ir.transmit(freq, pattern)
+            status.text = "IR sent candidate ${currentCandidate}. If TV reacted, tell me which number worked."
+        } catch (e: Exception) {
+            status.text = "IR send failed for candidate ${currentCandidate}."
         }
 
-        status.text = "IR send failed for all candidates."
     }
 
     private fun buildNec32Pattern(code: Long): IntArray {
