@@ -11,5 +11,4 @@
     <Button android:id="@+id/btnIr3" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="IR Code 3" android:textSize="24sp" android:layout_marginBottom="10dp"/>
     <Button android:id="@+id/btnIr4" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="IR Code 4" android:textSize="24sp" android:layout_marginBottom="30dp"/>
     <Button android:id="@+id/btnWifi" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="WiFi Power" android:textSize="24sp" android:backgroundTint="#2196F3" android:textColor="#FFFFFF"/>
-
 </LinearLayout>
